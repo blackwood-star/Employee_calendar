@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+.date{
+  font-size: 14px;
+  color: gray;
+}
+
+.custom-image{
+    background-image : url('https://images.unsplash.com/photo-1554080353-321e452ccf19?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80');
+}
+
+.layout::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .eventsinfo::-webkit-scrollbar {
+    display: none !important;
+  }
+
+#calsi{
+    cursor: pointer;
+}
+
+#authorize_button{
+    visibility: hidden;
+}
+
+#signout_button{
+    visibility: hidden;
+}
+
+.hide-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .react-calendar{
+    border-radius : 20px;
+    border: none !important;
+    box-shadow: 5px 10px 18px #f3f3f3;
+    background-color : ghostwhite;
+    width : 100% !important;
+    height : 100% !important;
+    border: 1px solid gray;
+  }
+
+  .react-calendar__navigation button{
+    color : dimgray;
+  }
+
+  abbr{
+    text-decoration: none !important;
+    font-family: 'Poppins', sans-serif !important;
+  }
+

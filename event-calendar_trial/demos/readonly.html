@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" content="XB Software" />
+		<meta name="publisher" content="XB Software" />
+		<meta name="copyright" content="XB Software" />
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,  user-scalable=no, shrink-to-fit=no"
+		/>
+		<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="../assets/favicon/icon-16.png" sizes="16x16" />
+		<link rel="icon" href="../assets/favicon/icon-32.png" sizes="32x32" />
+		<link rel="icon" href="../assets/favicon/icon-48.png" sizes="48x48" />
+		<link rel="icon" href="../assets/favicon/icon-96.png" sizes="96x96" />
+		<link
+			rel="icon"
+			href="../assets/favicon/icon-144.png"
+			sizes="144x144"
+		/>
+
+		<!-- Event Calendar -->
+		<link rel="stylesheet" href="../dist/event-calendar.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.dhtmlx.com/fonts/wxi/wx-icons.css"
+		/>
+		<script src="../dist/event-calendar.js"></script>
+
+		<!-- Demo data -->
+		<script src="./common/data.js"></script>
+		<link rel="stylesheet" href="../assets/demos.css" />
+
+		<title>Event Calendar: Readonly</title>
+	</head>
+	<style>
+		.wrapper {
+			display: flex;
+			height: 100%;
+		}
+
+		.eventCalendar {
+			flex: 1 1 auto;
+		}
+
+		.form {
+			background-color: #fbfbfb;
+			display: flex;
+			flex-direction: column;
+			align-items: start;
+			justify-content: center;
+			padding: 15px;
+		}
+	</style>
+
+	<body>
+		<div class="g-wrap">
+			<header class="g-header">
+				<div class="h-wrap">
+					<div class="h-nav">
+						<a href="../index.html">Back to demos</a>
+					</div>
+					<div class="h-title">Event Calendar: Readonly</div>
+					<div class="h-cta">
+						<a
+							href="https://dhtmlx.com/docs/products/dhtmlxEventCalendar/download.shtml"
+							target="_blank"
+							class="g-btn"
+							>Free Trial</a
+						>
+					</div>
+				</div>
+			</header>
+
+			<div class="wrapper">
+				<div class="eventCalendar">
+					<div id="root"></div>
+				</div>
+
+				<div class="form">
+					<label>
+						<input
+							id="readonly"
+							type="checkbox"
+							onclick="toggleCheckbox('readonly')"
+						/>
+						Readonly
+					</label>
+					<label>
+						<input
+							id="dragCreate"
+							type="checkbox"
+							onclick="toggleCheckbox('dragCreate')"
+						/>
+						Enable drag create
+					</label>
+					<label>
+						<input
+							id="dragMove"
+							type="checkbox"
+							onclick="toggleCheckbox('dragMove')"
+						/>
+						Enable drag move
+					</label>
+					<label>
+						<input
+							id="dragResize"
+							type="checkbox"
+							onclick="toggleCheckbox('dragResize')"
+						/>
+						Enable drag resize
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const checkboxes = {
+				dragResize: true,
+				readonly: false,
+				dragCreate: true,
+				dragMove: true,
+			};
+
+			function toggleCheckbox(id) {
+				checkboxes[id] = !checkboxes[id];
+				document.querySelector(`#${id}`).checked = checkboxes[id];
+				widget.setConfig({ config: { ...config, ...checkboxes } });
+			}
+
+			const config = {
+				timeRange: [0, 24],
+				readonly: checkboxes.readonly,
+				dragMove: checkboxes.dragMove,
+				dragCreate: checkboxes.dragCreate,
+				dragResize: checkboxes.dragResize,
+				views: {
+					day: {
+						hourHeight: 70,
+					},
+				},
+			};
+
+			Object.keys(checkboxes).forEach(key => {
+				document.querySelector(`#${key}`).checked = checkboxes[key];
+			});
+
+			const widget = new eventCalendar.EventCalendar("#root", {
+				events: getData(),
+				config,
+				date: new Date(2022, 5, 10),
+			});
+		</script>
+	</body>
+</html>

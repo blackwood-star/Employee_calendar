@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="author" content="XB Software" />
+		<meta name="publisher" content="XB Software" />
+		<meta name="copyright" content="XB Software" />
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1,  user-scalable=no, shrink-to-fit=no"
+		/>
+		<link rel="icon" href="../favicon.ico" type="image/x-icon" />
+		<link rel="icon" href="../assets/favicon/icon-16.png" sizes="16x16" />
+		<link rel="icon" href="../assets/favicon/icon-32.png" sizes="32x32" />
+		<link rel="icon" href="../assets/favicon/icon-48.png" sizes="48x48" />
+		<link rel="icon" href="../assets/favicon/icon-96.png" sizes="96x96" />
+		<link
+			rel="icon"
+			href="../assets/favicon/icon-144.png"
+			sizes="144x144"
+		/>
+
+		<!-- Event Calendar -->
+		<link rel="stylesheet" href="../dist/event-calendar.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdn.dhtmlx.com/fonts/wxi/wx-icons.css"
+		/>
+		<script src="../dist/event-calendar.js"></script>
+
+		<!-- Demo data -->
+		<script src="./common/data.js"></script>
+		<link rel="stylesheet" href="../assets/demos.css" />
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/2.0.0-alpha0/date_fns.min.js"
+			integrity="sha512-0kon+2zxkK5yhflwFqaTaIhLVDKGVH0YH/jm8P8Bab/4EOgC/n7gWyy7WE4EXrfPOVDeNdaebiAng0nsfeFd9A=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css"
+		/>
+
+		<title>Event Calendar: Custom Templates</title>
+		<style>
+			.custom-date {
+				display: flex;
+				align-items: center;
+				justify-content: space-around;
+				flex-direction: column;
+				width: 100%;
+				height: 70px;
+			}
+
+			.mdi {
+				font-size: 14px;
+			}
+
+			.custom-date .mdi {
+				color: rgb(106, 163, 199);
+			}
+
+			.week_event_wrapper,
+			.multievent_label {
+				width: 100%;
+				flex-grow: 1;
+			}
+
+			.week_event_wrapper img {
+				max-width: 100%;
+			}
+
+			.popup_info {
+				width: 460px;
+				display: flex;
+				flex-direction: column;
+			}
+
+			.popup_controls {
+				margin-top: 7px;
+				display: flex;
+				gap: 9px;
+			}
+
+			.popup_control {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				cursor: pointer;
+				font-style: normal;
+			}
+
+			.popup_wrapper {
+				padding: 10px 20px 15px 20px;
+				max-width: 500px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="g-wrap">
+			<header class="g-header">
+				<div class="h-wrap">
+					<div class="h-nav">
+						<a href="../index.html">Back to demos</a>
+					</div>
+					<div class="h-title">Event Calendar: Custom Templates</div>
+					<div class="h-cta">
+						<a
+							href="https://dhtmlx.com/docs/products/dhtmlxEventCalendar/download.shtml"
+							target="_blank"
+							class="g-btn"
+							>Free Trial</a
+						>
+					</div>
+				</div>
+			</header>
+
+			<div id="root"></div>
+		</div>
+
+		<script>
+			const { format, getDay } = dateFns;
+			function header({ date, dateFormat }) {
+				const label = format(date, "dddd");
+				let icon = "mdi mdi-";
+				switch (getDay(date)) {
+					case 0:
+						icon += "moon-new";
+						break;
+					case 1:
+						icon += "moon-waxing-crescent";
+						break;
+					case 2:
+						icon += "moon-first-quarter";
+						break;
+					case 3:
+						icon += "moon-waxing-gibbous";
+						break;
+					case 4:
+						icon += "moon-full";
+						break;
+					case 5:
+						icon += "moon-waning-gibbous";
+						break;
+					case 6:
+						icon += "moon-waxing-crescent";
+						break;
+				}
+
+				return `
+			<div class="custom-date">
+				${label}
+				<i class="${icon}"> </i>
+			</div>
+		`;
+			}
+
+			function weekEvent({ event, calendar }) {
+				const start_date = format(event.start_date, "HH:mm");
+				const end_date = format(event.end_date, "HH:mm");
+
+				return `
+				<div class="week_event_wrapper">
+					<div>${event.text}</div>
+					<div>
+						${start_date}
+						-
+						${end_date}
+					</div>
+					${event.img ? `<img src=${event.img} alt="" />` : ""}
+				</div>
+		`;
+			}
+			function multievent({ event, calendar }) {
+				return `
+				<div class="wrapper">
+					<i
+						class="mdi mdi-calendar-multiple"
+						style="color: ${calendar.color.border}"> </i>
+					<span class="multievent_label">${event.text}</span>
+				</div>
+		`;
+			}
+			function monthEvent({ event, calendar }) {
+				const { start_date, text } = event;
+				const start = format(start_date, "HH:mm");
+				const label = `${start} ${text}`;
+				const type = calendar.id;
+				const border = calendar.color.border;
+				let icon = "mdi mdi-";
+				switch (type) {
+					case "Work":
+						icon += "briefcase";
+						break;
+					case "Meeting":
+						icon += "account-multiple";
+						break;
+					case "Movie":
+						icon += "movie-open";
+						break;
+					default:
+						icon += "palm-tree";
+						break;
+				}
+
+				return `
+			<div>
+				<i class="${icon}" style="color: ${border}"></i>
+				<span class="label"> ${label} </span>
+			</div>
+		`;
+			}
+			function deleteEvent() {
+				event_calendar.deleteEvent({ id: event.id });
+				event_calendar.hideEventInfo();
+			}
+			function edit() {
+				event_calendar.openEditor({ id: event.id });
+				event_calendar.hideEventInfo();
+			}
+
+			function popup({ event, calendar }) {
+				return `
+				<div class="popup_wrapper">
+					<span>
+						<h1 style="color: ${calendar.color.border}">${event.text}</h1>
+					</span>
+					<div class="popup_info">
+						<b>${event.details}</b>
+						<div>
+							${format(event.start_date, "MMM, do  h:mm")}
+							-
+							${format(event.end_date, "MMM, do h:mm")}
+						</div>
+
+						<div class="popup_controls">
+							<div class="popup_control" onclick="edit()">
+								<i class="mdi mdi-calendar-edit"></i>
+								<span class="popup_label">Update Event</span>
+							</div>
+							<div class="popup_control" onclick="deleteEvent()">
+								<i class="mdi mdi-delete-empty"> </i>
+								<span class="popup_label">Delete Event</span>
+							</div>
+						</div>
+					</div>
+				</div>
+		`;
+			}
+			const templates = {
+				header,
+				weekEvent,
+				multievent,
+				monthEvent,
+				popup,
+			};
+
+			const event_calendar = new eventCalendar.EventCalendar("#root", {
+				events: getData(),
+				templates,
+				date: new Date(2022, 5, 10),
+			});
+		</script>
+	</body>
+</html>
